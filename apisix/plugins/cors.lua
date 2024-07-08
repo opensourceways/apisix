@@ -75,9 +75,11 @@ local schema = {
         },
         expose_headers = {
             description =
-                "multiple header use ',' to split." ..
-                "If not specified, no custom headers are exposed.",
-            type = "string"
+                "you can use '*' to expose all header when no credentials," ..
+                "'**' to allow forcefully(it will bring some security risks, be carefully)," ..
+                "multiple header use ',' to split. default: *.",
+            type = "string",
+            default = "*"
         },
         max_age = {
             description =
@@ -224,9 +226,7 @@ local function set_cors_headers(conf, ctx)
     core.response.set_header("Access-Control-Allow-Origin", ctx.cors_allow_origins)
     core.response.set_header("Access-Control-Allow-Methods", allow_methods)
     core.response.set_header("Access-Control-Max-Age", conf.max_age)
-    if conf.expose_headers ~= nil and conf.expose_headers ~= "" then
-        core.response.set_header("Access-Control-Expose-Headers", conf.expose_headers)
-    end
+    core.response.set_header("Access-Control-Expose-Headers", conf.expose_headers)
     if conf.allow_headers == "**" then
         core.response.set_header("Access-Control-Allow-Headers",
             core.request.header(ctx, "Access-Control-Request-Headers"))

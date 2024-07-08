@@ -88,18 +88,8 @@ docker run -d --name dogstatsd-agent -e DD_API_KEY=<Your API Key from step 2> -p
 
 本小节介绍了如何在指定路由上启用 `datadog` 插件。进行以下操作之前请确认您的 Datadog Agent 已经启动并正常运行。
 
-:::note
-
-您可以这样从 `config.yaml` 中获取 `admin_key` 并存入环境变量：
-
-```bash
-admin_key=$(yq '.deployment.admin.admin_key[0].key' conf/config.yaml | sed 's/"//g')
-```
-
-:::
-
 ```shell
-curl http://127.0.0.1:9180/apisix/admin/routes/1 -H "X-API-KEY: $admin_key" -X PUT -d '
+curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
       "plugins": {
             "datadog": {}
@@ -122,7 +112,7 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1 -H "X-API-KEY: $admin_key" -X P
 APISIX 插件是支持热加载的，所以不用重新启动 APISIX，配置就能生效。
 
 ```shell
-curl http://127.0.0.1:9180/apisix/admin/routes/1 -H "X-API-KEY: $admin_key" -X PUT -d '
+curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
     "methods": ["GET"],
     "uri": "/hello",
@@ -143,7 +133,7 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1 -H "X-API-KEY: $admin_key" -X P
 向 `/apisix/admin/plugin_metadata/datadog` 发起请求，更改其元数据。操作示例如下：
 
 ```shell
-curl http://127.0.0.1:9180/apisix/admin/plugin_metadata/datadog -H "X-API-KEY: $admin_key" -X PUT -d '
+curl http://127.0.0.1:9180/apisix/admin/plugin_metadata/datadog -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
     "host": "172.168.45.29",
     "port": 8126,
@@ -161,7 +151,7 @@ curl http://127.0.0.1:9180/apisix/admin/plugin_metadata/datadog -H "X-API-KEY: $
 
 ```shell
 curl http://127.0.0.1:9180/apisix/admin/plugin_metadata/datadog \
--H "X-API-KEY: $admin_key" -X PUT -d '{}'
+-H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '{}'
 ```
 
 ## 配置属性

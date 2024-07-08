@@ -100,17 +100,8 @@ proxy_cache:
 
 Next, we can directly run `apisix reload` command to reload the latest plugin code without restarting Apache APISIX. See the command to reload the newly added plugin:
 
-:::note
-You can fetch the `admin_key` from `config.yaml` and save to an environment variable with the following command:
-
-```bash
-admin_key=$(yq '.deployment.admin.admin_key[0].key' conf/config.yaml | sed 's/"//g')
-```
-
-:::
-
 ``` shell
-curl http://127.0.0.1:9180/apisix/admin/plugins/reload -H "X-API-KEY: $admin_key" -X PUT
+curl http://127.0.0.1:9180/apisix/admin/plugins/reload -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT
 ```
 
 Then, we run two more curl commands to configure an Upstream and Route for the `/api/products` endpoint. The following command creates a sample upstream (that's our API Server):

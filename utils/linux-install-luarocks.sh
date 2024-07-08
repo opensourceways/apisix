@@ -65,4 +65,3 @@ fi
 
 luarocks config variables.OPENSSL_LIBDIR ${OPENSSL_PREFIX}/lib
 luarocks config variables.OPENSSL_INCDIR ${OPENSSL_PREFIX}/include
-luarocks config variables.YAML_DIR /usr

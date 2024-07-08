@@ -15,7 +15,7 @@
 -- limitations under the License.
 --
 
-local yaml = require("lyaml")
+local yaml = require("tinyyaml")
 local profile = require("apisix.core.profile")
 local util = require("apisix.cli.util")
 local dkjson = require("dkjson")
@@ -23,6 +23,7 @@ local dkjson = require("dkjson")
 local pairs = pairs
 local type = type
 local tonumber = tonumber
+local getmetatable = getmetatable
 local getenv = os.getenv
 local str_gmatch = string.gmatch
 local str_find = string.find
@@ -156,6 +157,14 @@ local function replace_by_reserved_env_vars(conf)
 end
 
 
+local function tinyyaml_type(t)
+    local mt = getmetatable(t)
+    if mt then
+        return mt.__type
+    end
+end
+
+
 local function path_is_multi_type(path, type_val)
     if str_sub(path, 1, 14) == "nginx_config->" and
             (type_val == "number" or type_val == "string") then
@@ -179,7 +188,7 @@ local function merge_conf(base, new_tab, ppath)
 
     for key, val in pairs(new_tab) do
         if type(val) == "table" then
-            if val == yaml.null then
+            if tinyyaml_type(val) == "null" then
                 base[key] = nil
 
             elseif tab_is_array(val) then
@@ -234,7 +243,7 @@ function _M.read_yaml_conf(apisix_home)
         return nil, err
     end
 
-    local default_conf = yaml.load(default_conf_yaml)
+    local default_conf = yaml.parse(default_conf_yaml)
     if not default_conf then
         return nil, "invalid config-default.yaml file"
     end
@@ -257,7 +266,7 @@ function _M.read_yaml_conf(apisix_home)
     end
 
     if not is_empty_file then
-        local user_conf = yaml.load(user_conf_yaml)
+        local user_conf = yaml.parse(user_conf_yaml)
         if not user_conf then
             return nil, "invalid config.yaml file"
         end
@@ -297,7 +306,7 @@ function _M.read_yaml_conf(apisix_home)
         local apisix_conf_path = profile:yaml_path("apisix")
         local apisix_conf_yaml, _ = util.read_file(apisix_conf_path)
         if apisix_conf_yaml then
-            local apisix_conf = yaml.load(apisix_conf_yaml)
+            local apisix_conf = yaml.parse(apisix_conf_yaml)
             if apisix_conf then
                 local ok, err = resolve_conf_var(apisix_conf)
                 if not ok then

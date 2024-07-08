@@ -29,7 +29,6 @@ install_dependencies() {
         cpanminus perl \
         openssl-devel
 
-    yum install -y libyaml-devel
     # install newer curl
     yum makecache
     yum install -y libnghttp2-devel

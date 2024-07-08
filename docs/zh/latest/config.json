@@ -1,5 +1,5 @@
 {
-  "version": "3.9.0",
+  "version": "3.9.1",
   "sidebar": [
     {
       "type": "category",
@@ -201,8 +201,7 @@
           "label": "其它协议",
           "items": [
             "plugins/dubbo-proxy",
-            "plugins/mqtt-proxy",
-            "plugins/http-dubbo"
+            "plugins/mqtt-proxy"
           ]
         }
       ]
@@ -326,10 +325,6 @@
         {
           "type": "doc",
           "id": "ssl-protocol"
-        },
-        {
-          "type": "doc",
-          "id": "http3"
         }
       ]
     },

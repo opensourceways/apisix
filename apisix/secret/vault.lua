@@ -37,9 +37,6 @@ local schema = {
         token = {
             type = "string",
         },
-        namespace = {
-            type = "string",
-        },
     },
     required = {"uri", "prefix", "token"},
 }
@@ -61,18 +58,11 @@ local function make_request_to_vault(conf, method, key, data)
         token = conf.token
     end
 
-    local headers = {
-        ["X-Vault-Token"] = token
-    }
-    if conf.namespace then
-        -- The namespace rule is referenced in
-        -- https://developer.hashicorp.com/vault/docs/enterprise/namespaces#vault-api-and-namespaces
-        headers["X-Vault-Namespace"] = conf.namespace
-    end
-
     local res, err = httpc:request_uri(req_addr, {
         method = method,
-        headers = headers,
+        headers = {
+            ["X-Vault-Token"] = token
+        },
         body = core.json.encode(data or {}, true)
     })
 

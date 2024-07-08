@@ -239,8 +239,7 @@ function _M.body_filter(conf, ctx)
     end
 
     if eof then
-        -- overwriting the arg[1], results into partial response
-        ngx.arg[1] = ngx.arg[1] .. ctx.compressor:finish()
+        ngx.arg[1] = ctx.compressor:finish()
     end
 end
 

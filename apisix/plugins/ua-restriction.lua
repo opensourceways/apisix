@@ -150,9 +150,7 @@ end
 
 
 function _M.access(conf, ctx)
-    -- after core.request.header function changed
-    -- we need to get original header value by using core.request.headers
-    local user_agent = core.request.headers(ctx)["User-Agent"]
+    local user_agent = core.request.header(ctx, "User-Agent")
 
     if not user_agent then
         if conf.bypass_missing then
